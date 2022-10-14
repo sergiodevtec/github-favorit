@@ -12,35 +12,21 @@ export class Favorites {
       
 
         entries.forEach(user => {
-          console.log(user)
+          const row = this.creatRow()
         })
          
       }
 
       load() {
-          
-        this.entries = [
-          {
-            login: 'maykbrito',
-            name: 'Mayk Brito',
-            public_repos: "76",
-            followers: '120000'
-          },
-          {
-            login: 'diego3g',
-            name: 'Diego Fernandes',
-            public_repos: "65",
-            followers: '10000'
-          },
-
-        ]
+        this.entries = JSON.parse(localStorage.getItem('@github-favorites:')) || []
       }
 
       delete(user) {
         const filteredEntries = this.entries.filter(entry => 
         entry.login !== user.login)
 
-        console.log(filteredEntries)
+      this.entries = filteredEntries
+      this.update()
       }
   }
 
@@ -58,8 +44,8 @@ export class FavoritesView extends Favorites {
       this.removeAllTr()
 
 
-      this.entries.forEach(user => {
-        const row = this.creatRow()
+      this.entries.forEach( user => {
+        const row = this.createRow()
         
         row.querySelector('.user img').src = `https://github.com/${user.login}.png`
         row.querySelector('.user img').alt = `Imagem de ${user.name}`
@@ -105,8 +91,8 @@ export class FavoritesView extends Favorites {
 
   removeAllTr() {
     this.tbody.querySelectorAll('tr')
-        .forEach((item) => {
-            item.remove()
+        .forEach((tr) => {
+            tr.remove()
         }) 
   }
 }
